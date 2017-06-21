@@ -1,0 +1,85 @@
+<html>
+    <head>
+        <title>Weathery Mockup</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css"/>
+        <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-debug.js"></script>
+
+    </head>
+    <body>
+        <h1>Weathery</h1>
+        <h2>Available states</h2>
+        <table class="table table-striped">
+            <tbody data-bind="foreach: weathers">
+                <tr>
+                    <td data-bind="text: state"></td>
+                    <td><button data-bind="disable: isPicked, click: $root.setAsPicked" class="btn btn-primary">Pick weather</button></td>
+                </tr>    
+            </tbody>
+        </table>
+        <h2>Pictogram</h2>
+        <img data-bind="attr: {src: imgfilename}"/>
+
+        <script>
+            function viewModel() {
+                var self = this;
+                self.weathers = ko.observableArray();
+                self.currentWeather = ko.observable();
+
+                self.imgfilename = ko.computed(function() {
+                    if (self.currentWeather() != null) {
+                        return (self.currentWeather().state + ".png").toLowerCase();
+                    } 
+                    else {
+                        return "blank.png";
+                    }
+                }, this);
+
+                self.setAsPicked = function(weather) {
+                    if (self.currentWeather() != null) {
+                        self.weathers()[self.weathers.indexOf(self.currentWeather())].isPicked(false);
+                    }
+                    self.weathers()[self.weathers.indexOf(weather)].isPicked(true);
+                    self.currentWeather(weather);
+                }
+
+                self.weathers.push({
+                    state: "Sunny",
+                    isPicked: ko.observable(false)
+                });
+                
+                self.weathers.push({
+                    state: "Cloudy",
+                    isPicked: ko.observable(false)
+                });
+
+                self.weathers.push({
+                    state: "Windy",
+                    isPicked: ko.observable(false)
+                });
+
+                self.weathers.push({
+                    state: "Rainy",
+                    isPicked: ko.observable(false)
+                });
+
+                self.weathers.push({
+                    state: "Rainstorm",
+                    isPicked: ko.observable(false)
+                });
+
+                self.weathers.push({
+                    state: "Freezing",
+                    isPicked: ko.observable(false)
+                });
+            };
+                                           
+            ko.applyBindings(new viewModel());
+        </script>
+    </body>
+ </html>
+   
+        
